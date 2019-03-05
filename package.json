@@ -1,6 +1,6 @@
 {
     "name": "node-red-node-alexa",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "",
     "node-red": {
         "nodes": {

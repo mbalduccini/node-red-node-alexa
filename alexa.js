@@ -211,8 +211,8 @@ module.exports = function(RED) {
         };
 
         this.callback = function(req,res) {
-            var type = req.body.request.type
-            var resp = {};
+            var type  = req.body.request.type
+            var resp  = {};
 
             switch(type) {
                 case "IntentRequest":
@@ -226,7 +226,7 @@ module.exports = function(RED) {
 
             for (var i = 0, len = handleList.length; i < len; i++) {
                 if(handleList[i].url == req.url && handleList[i].type == type) {
-                    var msg = { payload: resp, res:createResponseWrapper(handleList[i].node, res)}
+                    var msg = { payload:resp, res:createResponseWrapper(handleList[i].node, res)}
                     handleList[i].node.send(msg);
                 }
             }
@@ -242,6 +242,40 @@ module.exports = function(RED) {
         
         RED.httpNode.post(url, httpMiddleware, callback, errorHandler);
     }
+
+// =============================================================
+// =============================================================
+
+    function AlexaResponse(config) {
+        RED.nodes.createNode(this, config);
+        this.confSkill = RED.nodes.getNode(config.skill);
+
+        this.on("input",function(msg) {
+            if (msg.res) {
+                var statusCode = 200;
+                var closing = true;
+
+                if(typeof msg.closing !== 'undefined' && msg.closing !== null) 
+                    closing = msg.closing;
+    
+                var json = {
+                    "response": {
+                        "shouldEndSession": closing,
+                        "outputSpeech": {
+                            "text": ""+msg.payload,
+                            "type": "PlainText"
+                        }
+                    },
+                    "version": "1.0"
+                };
+                msg.res._res.status(statusCode).send(json);
+
+            } else {
+                RED.log.warn(RED._("node-alexa.errors.no-response"));
+            }
+        });
+    }
+    RED.nodes.registerType("Alexa Response", AlexaResponse);
 
 // =============================================================
 // =============================================================
