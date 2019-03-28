@@ -7,6 +7,11 @@
 
 <script type="text/x-red" data-help-name="Alexa LaunchRequest">
     <p>This node receives a LaunchRequest when the user invokes the skill with the invocation name.</p>
+	<p>Make sure to setup the URL for your endpoint and setup the skill in the Amazon Developer console.</p>
+		<br/>
+	<p>Output:<br/>payload.type -> LaunchRequest</p>
+		<br/>
+	<p>Other instructions: https://github.com/Skiepp/node-red-node-alexa</p>
 </script>
 
 <script type="text/javascript">
@@ -51,6 +56,11 @@
 
 <script type="text/x-red" data-help-name="Alexa IntentRequest">
     <p>This node receives an IntentRequest when the skill is in use.</p>
+	<p>Make sure to setup the URL for your endpoint and setup the skill in the Amazon Developer console.</p>
+		<br/>
+	<p>Output:<br/>payload.type -> IntentRequest<br/>payload.intent -> the intent<br/>payload.slots -> the slot(s)</p>
+		<br/>
+	<p>Other instructions: https://github.com/Skiepp/node-red-node-alexa</p>
 </script>
 
 <script type="text/javascript">
@@ -95,6 +105,11 @@
 
 <script type="text/x-red" data-help-name="Alexa SessionEndRequest">
     <p>This node receives an SessionEndRequest when the skill has closed by user.</p>
+	<p>Make sure to setup the URL for your endpoint and setup the skill in the Amazon Developer console.</p>
+		<br/>
+	<p>Output:<br/>payload.type -> SessionEndedRequest</p>
+		<br/>
+	<p>Other instructions: https://github.com/Skiepp/node-red-node-alexa</p>
 </script>
 
 <script type="text/javascript">
@@ -139,6 +154,11 @@
 
 <script type="text/x-red" data-help-name="Alexa Response">
     <p>This node sends a response back to Alexa.</p>
+	<p>Make sure to setup the URL for your endpoint and setup the skill in the Amazon Developer console.</p>
+		<br/>
+	<p>Input:<br/>payload -> "my answer"</p>
+		<br/>
+	<p>Other instructions: https://github.com/Skiepp/node-red-node-alexa</p>
 </script>
 
 <script type="text/javascript">
