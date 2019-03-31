@@ -1,5 +1,14 @@
 module.exports = function(RED) {
+    var bodyParser = require("body-parser");
+    var multer = require("multer");
+    var cookieParser = require("cookie-parser");
+    var getBody = require('raw-body');
+    var jsonParser = bodyParser.json();
+    var urlencParser = bodyParser.urlencoded({extended:true});
+    var typer = require('media-typer');
+    var isUtf8 = require('is-utf8');
 
+    
     var handleList = [];
 
     function createResponseWrapper(node,res) {
@@ -236,7 +245,19 @@ module.exports = function(RED) {
             }
         };
  
-        this.httpMiddleware = function(req,res,next) { next(); }
+        var httpMiddleware = function(req,res,next) { next(); }
+        var corsHandler = function(req,res,next) { next(); }
+
+        var multipartParser = function(req,res,next) { next(); }
+        if (this.upload) {
+            var mp = multer({ storage: multer.memoryStorage() }).any();
+            multipartParser = function(req,res,next) {
+                mp(req,res,function(err) {
+                    req._body = true;
+                    next(err);
+                })
+            };
+        }
 
         if (RED.settings.httpNodeMiddleware) {
             if (typeof RED.settings.httpNodeMiddleware === "function") {
@@ -244,8 +265,15 @@ module.exports = function(RED) {
             }
         }
         
-        RED.httpNode.post(url, httpMiddleware, callback, errorHandler);
-    }
+        RED.httpNode.post(url, cookieParser() ,httpMiddleware, corsHandler, jsonParser, urlencParser, multipartParser, rawBodyParser, this.callback, this.errorHandler);
+    }"dependencies": {
+    "express": "*",
+    "mongodb": "*",
+    "underscore": "*",
+    "rjs": "*",
+    "jade": "*",
+    "async": "*"
+  }
 
 // =============================================================
 // =============================================================
@@ -289,4 +317,45 @@ module.exports = function(RED) {
         this.url = config.url;
     }
     RED.nodes.registerType("alexa-config", ConfigAlexa);
+    
+// =============================================================
+// =============================================================
+
+    function rawBodyParser(req, res, next) {
+        if (req.skipRawBodyParser) { next(); } // don't parse this if told to skip
+        if (req._body) { return next(); }
+        req.body = "";
+        req._body = true;
+
+        var isText = true;
+        var checkUTF = false;
+
+        if (req.headers['content-type']) {
+            var parsedType = typer.parse(req.headers['content-type'])
+            if (parsedType.type === "text") {
+                isText = true;
+            } else if (parsedType.subtype === "xml" || parsedType.suffix === "xml") {
+                isText = true;
+            } else if (parsedType.type !== "application") {
+                isText = false;
+            } else if (parsedType.subtype !== "octet-stream") {
+                checkUTF = true;
+            } else {
+                // applicatino/octet-stream
+                isText = false;
+            }
+        }
+
+        getBody(req, {
+            length: req.headers['content-length'],
+            encoding: isText ? "utf8" : null
+        }, function (err, buf) {
+            if (err) { return next(err); }
+            if (!isText && checkUTF && isUtf8(buf)) {
+                buf = buf.toString()
+            }
+            req.body = buf;
+            next();
+        });
+    }
 }
