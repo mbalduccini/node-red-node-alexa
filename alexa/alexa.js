@@ -68,25 +68,13 @@ module.exports = function(RED) {
         // ----------------------------------------------------
 
             var node    = this;
-            var found   = false;
-            var double  = false;
+            setAlexaHandler(this.confSkill.url);
 
-            for (var i = 0, len = handleList.length; i < len; i++) {
-                if(handleList[i].url == this.confSkill.url) {
-                    found = true;
-                    if(handleList[i].node.id == node.id)
-                        double = true;
-                }
-            }
-            if(!found) setAlexaHandler(this.confSkill.url);
-
-            if(!double) {
-                handleList.push({
-                    "url":  this.confSkill.url,
-                    "type": "LaunchRequest",
-                    "node": node
-                });
-            }
+            handleList.push({
+                "url":  this.confSkill.url,
+                "type": "LaunchRequest",
+                "node": node
+            });
 
         // ----------------------------------------------------
 
@@ -120,25 +108,13 @@ module.exports = function(RED) {
         // ----------------------------------------------------
 
             var node    = this;
-            var found   = false;
-            var double  = false;
+            setAlexaHandler(this.confSkill.url);
 
-            for (var i = 0, len = handleList.length; i < len; i++) {
-                if(handleList[i].url == this.confSkill.url) {
-                    found = true;
-                    if(handleList[i].node.id == node.id)
-                        double = true;
-                }
-            }
-            if(!found) setAlexaHandler(this.confSkill.url);
-
-            if(!double) {
-                handleList.push({
-                    "url":  this.confSkill.url,
-                    "type": "IntentRequest",
-                    "node": node
-                });
-            }
+            handleList.push({
+                "url":  this.confSkill.url,
+                "type": "IntentRequest",
+                "node": node
+            });
 
         // ----------------------------------------------------
 
@@ -172,25 +148,14 @@ module.exports = function(RED) {
         // ----------------------------------------------------
 
             var node    = this;
-            var found   = false;
-            var double  = false;
 
-            for (var i = 0, len = handleList.length; i < len; i++) {
-                if(handleList[i].url == this.confSkill.url) {
-                    found = true;
-                    if(handleList[i].node.id == node.id)
-                        double = true;
-                }
-            }
-            if(!found) setAlexaHandler(this.confSkill.url);
+            setAlexaHandler(this.confSkill.url);
 
-            if(!double) {
-                handleList.push({
-                    "url":  this.confSkill.url,
-                    "type": "SessionEndedRequest",
-                    "node": node
-                });
-            }
+            handleList.push({
+                "url":  this.confSkill.url,
+                "type": "SessionEndedRequest",
+                "node": node
+            });
 
         // ----------------------------------------------------
 
@@ -236,6 +201,7 @@ module.exports = function(RED) {
             }
 
             for (var i = 0, len = handleList.length; i < len; i++) {
+
                 if(handleList[i].url == req.url && handleList[i].type == type) {
                     var msg = { payload:resp, user:user, res:createResponseWrapper(handleList[i].node, res)}
                     handleList[i].node.send(msg);
