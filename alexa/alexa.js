@@ -266,14 +266,7 @@ module.exports = function(RED) {
         }
         
         RED.httpNode.post(url, cookieParser() ,httpMiddleware, corsHandler, jsonParser, urlencParser, multipartParser, rawBodyParser, this.callback, this.errorHandler);
-    }"dependencies": {
-    "express": "*",
-    "mongodb": "*",
-    "underscore": "*",
-    "rjs": "*",
-    "jade": "*",
-    "async": "*"
-  }
+    }
 
 // =============================================================
 // =============================================================
