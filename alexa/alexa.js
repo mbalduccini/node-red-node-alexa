@@ -191,7 +191,7 @@ module.exports = function(RED) {
 
             switch(type) {
                 case "IntentRequest":
-                    if(req.body.request.intent.name.equals("AMAZON.StopIntent")) {
+                    if(req.body.request.intent.name == "AMAZON.StopIntent") {
                         type = "SessionEndedRequest";
                         user = req.body.session.sessionId;
                         break;
