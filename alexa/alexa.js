@@ -220,8 +220,6 @@ module.exports = function(RED) {
         };
 
         this.callback = function(req,res) {
-            RED.log.error(req);
-            RED.log.error(res);
             var type  = req.body.request.type
             var resp  = {};
             var user  = "";
