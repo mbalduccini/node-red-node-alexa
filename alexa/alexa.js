@@ -213,6 +213,7 @@ module.exports = function(RED) {
         this.callback = function(req,res) {
             var type  = req.body.request.type
             var resp  = {};
+            var user  = "";
 
             switch(type) {
                 case "IntentRequest":
@@ -222,11 +223,12 @@ module.exports = function(RED) {
                 case "LaunchRequest":
                 case "SessionEndedRequest":
                     resp.type = type;
+                    user      = req.body.session.sessionId;
             }
 
             for (var i = 0, len = handleList.length; i < len; i++) {
                 if(handleList[i].url == req.url && handleList[i].type == type) {
-                    var msg = { payload:resp, res:createResponseWrapper(handleList[i].node, res)}
+                    var msg = { payload:resp, user:user, res:createResponseWrapper(handleList[i].node, res)}
                     handleList[i].node.send(msg);
                 }
             }
