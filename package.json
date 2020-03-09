@@ -13,7 +13,8 @@
 	    "cookie-parser": "*",
 	    "raw-body": "*",
 	    "media-typer": "*",
-	    "is-utf8": "*"
+		"is-utf8": "*",
+		"alexa-verifier": "*"
 	  },
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
