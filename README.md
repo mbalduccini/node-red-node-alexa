@@ -18,7 +18,9 @@ ex: /alexa
 ###### \<Node-RED endpoit\>/\<url-configured in configuration node\>
 ex: https://myNodeRed/alexa
 
-Note: SSL required and the node-red server must accept requests on port 443.
+Note:
+* SSL is required and the node-red server must accept requests on port 443.
+* TLS 1.3 is currently required by Amazon for HTTPS
 
 
 ## (III) Nodes:
