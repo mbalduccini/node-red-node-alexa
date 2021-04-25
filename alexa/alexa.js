@@ -206,11 +206,30 @@ module.exports = function(RED) {
                     user      = req.body.session.sessionId;
             }
 
+            //console.log("req.url="+req.url+"\n");
+            var req_url=req.url;
+
+            var idx = req_url.indexOf("/?");
+            if (idx == -1)
+            {   idx = req_url.indexOf("?");
+	        }
+            if (idx != -1)
+            {   req_url = req_url.substring(0, idx);
+            }
+//console.log("req.url="+req_url+"\n");
+
             for (var i = 0, len = handleList.length; i < len; i++) {
 
-                if(handleList[i].url == req.url && handleList[i].type == type) {
+
+//console.log("checking #"+i+"\n");
+//console.log("    expected url="+handleList[i].url+"\n");
+//                if(handleList[i].url == req.url && handleList[i].type == type) {
+                if(handleList[i].url == req_url && handleList[i].type == type) {
+//console.log("code was triggered\n");
                     var msg = { payload:resp, user:user, res:createResponseWrapper(handleList[i].node, res)}
+//console.log("msg="+msg+"\n");
                     handleList[i].node.send(msg);
+//console.log("message sent to node\n");
                 }
             }
         };
