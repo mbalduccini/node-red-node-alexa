@@ -288,7 +288,8 @@ module.exports = function(RED) {
             });
         }
         
-        RED.httpNode.post(url, cookieParser(), alexaVerifier, httpMiddleware, corsHandler, urlencParser, multipartParser, this.callback, this.errorHandler);
+	// verifier not working -- disabled
+        RED.httpNode.post(url, cookieParser(), /*alexaVerifier,*/ httpMiddleware, corsHandler, urlencParser, multipartParser, this.callback, this.errorHandler);
     }
 
 // =============================================================
