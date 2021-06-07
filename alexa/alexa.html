@@ -94,6 +94,57 @@
 <!--
     =============================================================
     =============================================================
+
+    [MB]
+-->
+
+<script type="text/x-red" data-template-name="Alexa CanFulfillIntentRequest">
+    <div class="form-row">
+        <label for="node-input-skill"><i class="fa fa-amazon"></i> Skill</label>
+        <input type="text" id="node-input-skill">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="Alexa CanFulfillIntentRequest">
+    <p>This node receives a CanFulfillIntentRequest when the skill is in use.</p>
+	<p>Make sure to setup the URL for your endpoint and setup the skill in the Amazon Developer console.</p>
+		<br/>
+	<p>Output:<br/>payload.type -> CanFulfillIntentRequest<br/>payload.intent -> the intent<br/>payload.slots -> the slot(s)</p>
+		<br/>
+	<p>Other instructions: https://github.com/Skiepp/node-red-node-alexa</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('Alexa CanFulfillIntentRequest',{
+        category: 'alexa',
+        color:"#EEEEFF",
+        defaults: {
+            skill: {value:"", type:"alexa-config", required: true},
+        },
+        inputs:0,
+        outputs:1,
+        icon: "alexa.png",
+        label: function() {
+            if(this.name) {
+                return this.name;
+            } else {
+                return "Alexa CanFulfillIntent";
+            }
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        paletteLabel: function() {
+          return "Alexa CanFulfillIntent";
+        },
+        oneditprepare: function() {
+        }
+    });
+</script>
+
+<!--
+    =============================================================
+    =============================================================
 -->
 
 <script type="text/x-red" data-template-name="Alexa SessionEndRequest">
