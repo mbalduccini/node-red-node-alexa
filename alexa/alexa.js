@@ -1,4 +1,4 @@
-\module.exports = function(RED) {
+module.exports = function(RED) {
     var bodyParser = require("body-parser");
     var multer = require("multer");
     var cookieParser = require("cookie-parser");
