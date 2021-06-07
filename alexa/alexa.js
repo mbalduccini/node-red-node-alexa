@@ -370,6 +370,38 @@ module.exports = function(RED) {
 // =============================================================
 // =============================================================
 
+    function AlexaCanFulfillIntentResponse(config) {
+        RED.nodes.createNode(this, config);
+        this.confSkill = RED.nodes.getNode(config.skill);
+
+        this.on("input",function(msg) {
+            if (msg.res) {
+                var statusCode = 200;
+                var closing = true;
+
+                if(typeof msg.closing !== 'undefined' && msg.closing !== null) 
+                    closing = msg.closing;
+    
+                var json = {
+                    "response": {
+                        "canFulfillIntent": {
+                            "canFulfill": ""+msg.payload
+                        }
+                    },
+                    "version": "1.0"
+                };
+                msg.res._res.status(statusCode).send(json);
+
+            } else {
+                RED.log.warn(RED._("node-alexa.errors.no-response"));
+            }
+        });
+    }
+    RED.nodes.registerType("Alexa CanFulfillIntentResponse", AlexaCanFulfillIntentResponse);
+
+// =============================================================
+// =============================================================
+
     function ConfigAlexa(config) {
         RED.nodes.createNode(this, config);
         this.url = config.url;
