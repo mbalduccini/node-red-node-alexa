@@ -7,7 +7,7 @@ module.exports = function(RED) {
     var urlencParser = bodyParser.urlencoded({extended:true});
     var typer = require('media-typer');
     var isUtf8 = require('is-utf8');
-    var verifier = require('alexa-verifier');
+//    var verifier = require('alexa-verifier');
 
     
     var handleList = [];
@@ -294,7 +294,7 @@ module.exports = function(RED) {
                 httpMiddleware = RED.settings.httpNodeMiddleware;
             }
         }
-
+/*
         var alexaVerifier = function(req, res, next) {
             if(!req.headers.signaturecertchainurl){
                     res.status(403).json({ status: 'failure', reason: er });
@@ -328,7 +328,7 @@ module.exports = function(RED) {
                     });
             });
         }
-        
+*/        
 	// verifier not working -- disabled
         RED.httpNode.post(url, cookieParser(), /*alexaVerifier,*/ httpMiddleware, corsHandler, urlencParser, multipartParser, this.callback, this.errorHandler);
     }
