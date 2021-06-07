@@ -1,4 +1,4 @@
-module.exports = function(RED) {
+\module.exports = function(RED) {
     var bodyParser = require("body-parser");
     var multer = require("multer");
     var cookieParser = require("cookie-parser");
@@ -137,6 +137,46 @@ module.exports = function(RED) {
 // =============================================================
 // =============================================================
 
+    function AlexaCanFulfillIntentReq(config) {
+        RED.nodes.createNode(this, config);
+        this.confSkill = RED.nodes.getNode(config.skill);
+        if (RED.settings.httpNodeRoot !== false && this.confSkill) {
+            
+            if (this.confSkill.url[0] !== '/') {
+                this.confSkill.url = '/' + this.confSkill.url;
+            }
+
+        // ----------------------------------------------------
+
+            var node    = this;
+            setAlexaHandler(this.confSkill.url);
+
+            handleList.push({
+                "url":  this.confSkill.url,
+                "type": "CanFulfillIntentRequest",
+                "node": node
+            });
+
+        // ----------------------------------------------------
+
+            this.on("close",function() {
+                var node = this;
+                RED.httpNode._router.stack.forEach(function(route,i,routes) {
+                    if (route.route && route.route.path === node.url && route.route.methods[node.method]) {
+                        routes.splice(i,1);
+                    }
+                });
+            });
+
+        } else {
+            this.warn(RED._("node-alexa.errors.not-created"));
+        }
+    }
+    RED.nodes.registerType("Alexa CanFulfillIntentRequest", AlexaCanFulfillIntentReq);
+
+// =============================================================
+// =============================================================
+
     function SessionEndReq(config) {
         RED.nodes.createNode(this, config);
         this.confSkill = RED.nodes.getNode(config.skill);
@@ -192,6 +232,7 @@ module.exports = function(RED) {
 
             switch(type) {
                 case "IntentRequest":
+                case "CanFulfillIntentRequest":
                     if(req.body.request.intent.name == "AMAZON.StopIntent") {
                         type = "SessionEndedRequest";
                         user = req.body.session.sessionId;
